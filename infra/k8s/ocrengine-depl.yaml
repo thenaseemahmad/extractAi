@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocrengine-depl
+spec:
+  selector:
+    matchLabels:
+      app: ocrengine
+  template:
+    metadata:
+      labels:
+        app: ocrengine
+    spec:
+      containers:
+      - name: ocrengine
+        image: naseemahmad244/exai-ocrengine
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocrengine-service
+spec:
+  selector:
+    app: ocrengine
+  ports:
+  - port: 3000
+    targetPort: 3000
+

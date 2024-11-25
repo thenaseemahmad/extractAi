@@ -1,0 +1,9 @@
+.project_bar{
+    height: 40px;
+    background-color: #bdbdbd;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px;
+}
+

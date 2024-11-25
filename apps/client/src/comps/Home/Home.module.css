@@ -1,0 +1,40 @@
+.home{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(94%);
+}
+
+.intro{
+    text-align: center;
+    margin: 0 96px 0 96px;
+}
+
+.intro_heading{
+    padding: 0 0 48px 0;
+    font-size: 96px;
+    font-weight: 700;
+}
+
+.intro_detail{
+    font-size: 40px;
+    font-weight: 400;
+    padding: 16px;
+}
+
+.intro_btns{
+    margin: 48px 0 48px 0;
+}
+
+.intro_detail_footer{
+    font-size: 32px;
+    font-weight: 500;
+    padding: 48px;
+}
+
+.intro_detail_footer > span{
+    font-size: 32px;
+    font-weight: bold;
+    font-style:oblique;
+    
+}

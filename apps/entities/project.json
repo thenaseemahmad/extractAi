@@ -1,0 +1,76 @@
+{
+  "name": "entities",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/entities/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/entities",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/entities/src/main.ts",
+        "tsConfig": "apps/entities/tsconfig.app.json",
+        "assets": ["apps/entities/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "entities:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "entities:build:development"
+        },
+        "production": {
+          "buildTarget": "entities:build:production"
+        }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build --no-cache -f apps/entities/Dockerfile --progress=plain . -t naseemahmad244/exai-entities"
+    },
+
+    "docker-push": {
+      "dependsOn": ["docker-build"],
+      "command": "docker push naseemahmad244/exai-entities"
+    },
+
+    "docker-serve":{
+      "dependsOn": ["docker-build"],
+      "command": "docker run --rm -p 3002:3002 naseemahmad244/exai-entities"
+    },
+    "kubectl-apply":{
+      "dependsOn": ["docker-push"],
+      "command": "kubectl apply -f infra/k8s/entities-depl.yaml"
+    }
+  }
+}

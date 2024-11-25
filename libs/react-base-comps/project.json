@@ -1,0 +1,9 @@
+{
+  "name": "react-base-comps",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/react-base-comps/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project react-base-comps --web",
+  "targets": {}
+}

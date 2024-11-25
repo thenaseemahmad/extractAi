@@ -1,0 +1,46 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: exai
+build:
+  tagPolicy:
+    sha256: {}
+  local:
+    push: false
+  artifacts:
+    - image: naseemahmad244/exai-ocrengine
+      context: ./
+      docker:
+        dockerfile: apps/ocrengine/Dockerfile
+      sync:
+        manual:
+          - dest: app/ocrengine
+            src: 'dist/apps/ocrengine/**/*'
+    - image: naseemahmad244/exai-workspaces
+      context: ./
+      docker:
+        dockerfile: apps/workspaces/Dockerfile
+      sync:
+        manual:
+          - dest: app/workspaces
+            src: 'dist/apps/workspaces/**/*'
+    - image: naseemahmad244/exai-entities
+      context: ./
+      docker:
+        dockerfile: apps/entities/Dockerfile
+      sync:
+        manual:
+          - dest: app/entities
+            src: 'dist/apps/entities/**/*'
+    - image: naseemahmad244/exai-client
+      context: ./
+      docker:
+        dockerfile: apps/client/Dockerfile
+      sync:
+        manual:
+          - dest: /usr/share/nginx/html
+            src: 'dist/apps/client/**'
+            strip: 'dist/apps/client/'
+manifests:
+  rawYaml:
+    - infra/k8s/*.yaml

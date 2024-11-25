@@ -1,0 +1,29 @@
+.workspace{
+    display: flex;
+    height: calc(94%);
+}
+
+.leftpane{
+    flex-grow: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rightpane{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    background-color: #f9f9f9;
+    padding: 16px;
+}
+
+.new_entity{
+    display: flex;
+    flex-direction: row;
+}
+
+.entities{
+    height: 100%;
+    overflow-y: auto;
+}

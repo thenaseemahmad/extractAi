@@ -1,0 +1,59 @@
+.studio{
+    display: flex;
+    flex-direction: row;
+    height: calc(94%);
+}
+
+.left_pane{
+    background-color: rgb(234, 232, 232);
+    padding-top: 48px;
+    width: 200px;
+}
+
+.left_pane_items{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.right_pane{
+    background-color: rgb(215, 215, 215);
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    flex-direction: column;
+    padding: 32px;
+    width: 90%;
+}
+
+.intro{
+    text-align: center;
+    background-color: rgb(205, 206, 207);
+    border-radius: 16px;
+    padding: 32px;
+}
+
+.intro_heading{
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.intro_detail{
+    font-size: 24px;
+    font-weight: 400;
+    padding: 16px;
+}
+
+.workspaces{
+    background-color: rgb(205, 206, 207);
+    border-radius: 16px;
+    padding: 32px;
+}
+
+.existing_workspace_heading{
+    font-size: 32px;
+    font-weight: 500;
+    padding: 32px 0 32px 0;
+    
+}
+

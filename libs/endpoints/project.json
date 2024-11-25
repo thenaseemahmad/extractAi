@@ -1,0 +1,9 @@
+{
+  "name": "endpoints",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/endpoints/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project endpoints --web",
+  "targets": {}
+}

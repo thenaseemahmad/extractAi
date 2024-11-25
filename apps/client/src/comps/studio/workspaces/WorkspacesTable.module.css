@@ -1,0 +1,21 @@
+.workspaces_main{
+    overflow: auto;
+    font-size: 20px;
+}
+
+.workspaces{
+    width: 100%;
+    text-align: left;
+}
+
+th, td{
+    padding: 16px 4px 16px 4px;
+}
+
+tr{
+    cursor: pointer;
+}
+
+span{
+    text-decoration: underline;
+}

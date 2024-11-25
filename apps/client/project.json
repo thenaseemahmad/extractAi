@@ -5,5 +5,28 @@
   "projectType": "application",
   "tags": [],
   "// targets": "to see all targets run: nx show project client --web",
-  "targets": {}
+  "targets": {
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build --no-cache -f apps/client/Dockerfile . -t naseemahmad244/exai-client:latest"
+    },
+
+    "docker-push":{
+      "dependsOn": ["docker-build"],
+      "command": "docker push naseemahmad244/exai-client:latest"
+    },
+
+    "docker-serve":{
+      "dependsOn": ["docker-build"],
+      "command": "docker run -p 4200:4200 --rm naseemahmad244/exai-client:latest"
+    },
+    "ingress-controller":{
+      "cache": true,
+      "command": "kubectl apply -f infra/k8s/ingress-controller.yaml"
+    },
+    "kubectl-apply":{
+      "dependsOn": ["docker-push","ingress-controller"],
+      "command": "kubectl apply -f infra/k8s/client-depl.yaml"
+    }
+  }
 }

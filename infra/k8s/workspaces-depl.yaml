@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workspaces-depl
+spec:
+  selector:
+    matchLabels:
+      app: workspaces
+  template:
+    metadata:
+      labels:
+        app: workspaces
+    spec:
+      containers:
+      - name: workspaces
+        image: naseemahmad244/exai-workspaces
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workspaces-service
+spec:
+  selector:
+    app: workspaces
+  ports:
+  - port: 3001
+    targetPort: 3001

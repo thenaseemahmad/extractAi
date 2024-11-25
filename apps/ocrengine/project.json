@@ -1,0 +1,77 @@
+{
+  "name": "ocrengine",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ocrengine/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/ocrengine",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/ocrengine/src/main.ts",
+        "tsConfig": "apps/ocrengine/tsconfig.app.json",
+        "assets": ["apps/ocrengine/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "ocrengine:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ocrengine:build:development"
+        },
+        "production": {
+          "buildTarget": "ocrengine:build:production"
+        }
+      }
+    }, 
+
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build --no-cache -f apps/ocrengine/Dockerfile --progress=plain . -t naseemahmad244/exai-ocrengine"
+    },
+
+    "docker-push": {
+      "dependsOn": ["docker-build"],
+      "command": "docker push naseemahmad244/exai-ocrengine"
+    },
+
+    "docker-serve":{
+      "dependsOn": ["docker-build"],
+      "command": "docker run --rm -p 3000:3000 naseemahmad244/exai-ocrengine"
+    },
+    "kubectl-apply":{
+      "dependsOn": ["docker-push"],
+      "command": "kubectl apply -f infra/k8s/ocrengine-depl.yaml"
+    }
+  }
+}

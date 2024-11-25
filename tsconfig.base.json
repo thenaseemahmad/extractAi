@@ -14,7 +14,20 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@chrome-buildin-ai-naseem/chrome-buildin-ai-api": [
+        "libs/chrome-buildin-ai-api/src/index.ts"
+      ],
+      "@chrome-buildin-ai-naseem/endpoints": ["libs/endpoints/src/index.ts"],
+      "@chrome-buildin-ai-naseem/errors": ["libs/errors/src/index.ts"],
+      "@chrome-buildin-ai-naseem/interfaces": ["libs/interfaces/src/index.ts"],
+      "@chrome-buildin-ai-naseem/middlewares": [
+        "libs/middlewares/src/index.ts"
+      ],
+      "@chrome-buildin-ai-naseem/react-base-comps": [
+        "libs/react-base-comps/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

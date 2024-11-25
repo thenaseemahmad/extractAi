@@ -1,0 +1,94 @@
+.left_pane_item{
+    padding-left: 24px;
+}
+
+.left_pane_item_hove{
+    padding-left: 24px;
+    background-color: rgb(213, 211, 211);
+    cursor: default;
+}
+
+.li_title{
+    padding-top: 16px;
+    padding-bottom: 16px;
+    font-size: larger;
+}
+
+/* large button property */
+.btn_large_highlighted, .btn_large_standard{    
+    font-size: 32px;
+    font-weight: 600;
+    padding: 16px;
+}
+
+.btn_medium_highlighted, .btn_medium_standard{    
+    font-size: 24px;
+    font-weight: 600;
+    padding: 16px;
+}
+
+.btn_small_highlighted, .btn_small_standard{    
+    font-size: 16px;
+    font-weight: 600;
+    padding: 16px;
+}
+
+.btn_large_highlighted, .btn_medium_highlighted, .btn_small_highlighted{
+    background-color: rgb(0, 0, 0);
+    color: aliceblue;
+}
+
+
+.btn_large_standard, .btn_medium_standard, .btn_small_standard{    
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);    
+}
+
+.entity_name{
+    flex-grow: 1;
+    padding: 16px;
+    width: 300px;
+    border: 2px solid #000000;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+    &:focus{
+        border-color: #2e7dd4;
+    }
+}
+
+.textarea{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.navigation_button_next{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 100%;    
+    padding: 8px;
+    min-width: 50px;
+    margin-left: auto;
+}
+.navigation_button_next:hover{
+    cursor: pointer;
+}
+
+.navigation_button_back{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 100%;    
+    padding: 8px;
+    min-width: 50px;
+    margin-right: auto;
+}
+
+.navigation_button_back:hover{
+    cursor: pointer;
+}

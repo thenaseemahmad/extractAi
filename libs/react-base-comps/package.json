@@ -1,0 +1,12 @@
+{
+  "name": "@chrome-buildin-ai-naseem/react-base-comps",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entities-depl
+spec:
+  selector:
+    matchLabels:
+      app: entities
+  template:
+    metadata:
+      labels:
+        app: entities
+    spec:
+      containers:
+      - name: entities
+        image: naseemahmad244/exai-entities
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: entities-service
+spec:
+  selector:
+    app: entities
+  ports:
+  - port: 3002
+    targetPort: 3002
