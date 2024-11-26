@@ -1,61 +1,86 @@
 import { useNavigate } from "react-router-dom";
-import styles from "./WorkspacesTable.module.css";
-import { useEffect, useState } from "react";
-import { IWorkspace } from "@chrome-buildin-ai-naseem/interfaces";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { workspaceEndPoint } from "@chrome-buildin-ai-naseem/endpoints";
+import styles from "./WorkspacesTable.module.css";
 import { SettingIconButton } from "@chrome-buildin-ai-naseem/react-base-comps";
+import { Modal, IModalHandle } from "./workspace/workspace-setting-modal";
+import { workspaceEndPoint } from "@chrome-buildin-ai-naseem/endpoints";
+import { IWorkspace } from "@chrome-buildin-ai-naseem/interfaces";
 
-interface workspaceWithId extends IWorkspace {
+interface WorkspaceWithId extends IWorkspace {
     _id: string;
 }
+
 export default function WorkspacesTable() {
-    const [workspaces, setWorkspaces] = useState<workspaceWithId[]>([]);
+    const [workspaces, setWorkspaces] = useState<WorkspaceWithId[]>([]);
+    const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string | null>(null);
+    const [workspaceUpdated, setWorkspaceUpdated] = useState(false);
+    const navigate = useNavigate();
+    const modalRef = useRef<IModalHandle>(null);
 
-    const navigator = useNavigate();
-
+    
     useEffect(() => {
-        async function fetchWorkspaces() {
-            await axios.get<workspaceWithId[]>(workspaceEndPoint)
-                .then((response) => {
-                    setWorkspaces(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
+        const fetchWorkspaces = async () => {
+            try {
+                const response = await axios.get<WorkspaceWithId[]>(workspaceEndPoint);
+                setWorkspaces(response.data);
+            } catch (error) {
+                console.error("Error fetching workspaces:", error);
+            }
+        };
+
         fetchWorkspaces();
-    }, []);
+    }, [workspaceUpdated]);
 
+    const handleWorkspaceSelect = (workspaceId: string) => {
+        navigate(`/studio/${workspaceId}`);
+    };
 
-    function handleWorkspaceSelect(selectedWorkspadeId: string) {
-        navigator(`/studio/${selectedWorkspadeId}`)
-    }
+    const handleSettingIconClick = (workspaceId: string) => {        
+        setSelectedWorkspaceId(workspaceId);
+        setTimeout(() => {
+            modalRef.current?.showModal();
+        }, 0);
+    };
 
-    function handleSettingIconClick(workspaceId:string){
-        console.log("Setting of ", workspaceId, "clicked");
-    }
-
-    return <div className={styles.workspaces_main}>
-        <table className={styles.workspaces}>
-            <thead>
-                <tr className={styles.row}>
-                    <th className={styles.cell}>Name</th>
-                    <th>Owner</th>
-                    <th>Created on</th>
-                    <th>Setting</th>
-                </tr>
-            </thead>
-            <tbody>
-                {workspaces.map((workspace) => (
+    return (<>
+        <div className={styles.workspaces_main}>
+            <table className={styles.workspaces}>
+                <thead>
                     <tr className={styles.row}>
-                        <td><span onClick={() => { handleWorkspaceSelect(workspace._id) }}>{workspace.workspaceName}</span></td>
-                        <td>{workspace.createdBy}</td>
-                        <td>{workspace.createdOn}</td>
-                        <td><SettingIconButton onClick={()=>handleSettingIconClick(workspace._id.toString())}/></td>
+                        <th className={styles.cell}>Name</th>
+                        <th>Owner</th>
+                        <th>Created on</th>
+                        <th>Setting</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {workspaces.map((workspace) => (
+                        <tr key={workspace._id} className={styles.row}>
+                            <td>
+                                <span onClick={() => handleWorkspaceSelect(workspace._id)}>
+                                    {workspace.workspaceName}
+                                </span>
+                            </td>
+                            <td>{workspace.createdBy}</td>
+                            <td>{workspace.createdOn}</td>
+                            <td>
+                                <SettingIconButton onClick={() => handleSettingIconClick(workspace._id)} />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+        {selectedWorkspaceId !== null && (
+            <Modal
+                ref={modalRef}
+                workspaceId={selectedWorkspaceId}
+                workspaceUpdated={(updated) => setWorkspaceUpdated(updated)}
+            >
+                <h3>Workspace Settings</h3>
+            </Modal>
+        )}
+    </>
+    );
 }

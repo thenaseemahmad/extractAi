@@ -8,6 +8,11 @@
     text-align: left;
 }
 
+tbody{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 th, td{
     padding: 16px 4px 16px 4px;
 }

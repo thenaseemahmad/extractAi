@@ -19,6 +19,18 @@ body {
   overflow: hidden;
 }
 
+#modal-root{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(5px); /* Apply the blur effect */
+  background-color: rgba(0, 0, 0, 0.4); /* Optional: Add a dimming effect */
+}
+
 ul {
   list-style-type: none;
 }

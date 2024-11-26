@@ -35,7 +35,7 @@ export function ListItem({ title, onClick }: liPropType) {
 interface buttonPropType {
   title: string;
   type?: "btn_small_highlighted" | "btn_small_standard" | "btn_medium_highlighted" | "btn_medium_standard" | "btn_large_highlighted" | "btn_large_standard";
-  onClick: () => void;
+  onClick?: () => void;
 }
 export function Button({ title, type, onClick, ...props }: buttonPropType) {
   let classToApply = styles.btn_medium_standard;
@@ -64,15 +64,18 @@ export function Button({ title, type, onClick, ...props }: buttonPropType) {
 
 type TextInputProps = {
   placeholder?: string;
+  initValue:string;
 }
 
 export type TextInputHandle = {
   getValue: () => string;
   resetValue: () => void;
 }
-export const TextInput = forwardRef<TextInputHandle, TextInputProps>(({ placeholder }, ref) => {
+export const TextInput = forwardRef<TextInputHandle, TextInputProps>(({ placeholder, initValue }, ref) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState<string>(initValue);
+
   useImperativeHandle(ref, () => ({
     getValue: () => {
       return inputRef.current ? inputRef.current.value : '';
@@ -82,12 +85,19 @@ export const TextInput = forwardRef<TextInputHandle, TextInputProps>(({ placehol
         inputRef.current.value = '';
       }
     }
-  }))
+  }));
+
+  useEffect(()=>{
+    setInputValue(initValue);
+  },[initValue])
+
   return <input
     className={styles.entity_name}
     type="text"
     ref={inputRef}
     placeholder={placeholder ? placeholder : "Enter text here"}
+    value={inputValue}
+    onChange={(e)=> setInputValue(e.target.value)}
   />
 });
 

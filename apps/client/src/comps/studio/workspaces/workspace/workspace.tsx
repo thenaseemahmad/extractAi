@@ -100,7 +100,7 @@ export default function Workspace() {
             </div>
             <div className={styles.rightpane}>
                 <div className={styles.new_entity}>
-                    <TextInput ref={newEntityInputRef} placeholder="Add a new entity" />
+                    <TextInput ref={newEntityInputRef} placeholder="Add a new entity" initValue=""/>
                     <Button title="Add" type="btn_small_highlighted" onClick={handleAddNewEntity} />
                 </div>
                 <hr />

@@ -1,101 +1,85 @@
-# ChromeBuildinAiNaseem
+# ExtractionAi (Data Extraction from Images using Chrome-build-in AI)
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+This project extracts data from scanned images using **Tesseract OCR** for text recognition and processes the extracted data using **Chrome's Built-in AI Prompt Generation Model**. Designed with a modern, scalable architecture, the project is ideal for automating workflows involving image-based data.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+---
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Features
 
-## Run tasks
+- **Image-to-Text Conversion**: Leverages Tesseract OCR for accurate text extraction.
+- **AI Data Processing**: Utilizes Chrome’s built-in AI prompt model for intelligent data manipulation and insights.
+- **Monorepo Architecture**: Built using **Nx Monorepo** for modular and maintainable development.
+- **Containerized Deployment**: Facilitated by **Docker** and **Kubernetes**.
+- **Continuous Local Development**: Achieved through **Skaffold** for rapid iteration.
 
-To run the dev server for your app, use:
+---
 
-```sh
-npx nx serve client
+## Prerequisites
+
+Ensure the following are installed on your system before starting:
+
+1. **Node.js** (v16 or later)
+2. **Nx CLI**: Install with `npm install -g nx`
+3. **Docker Desktop**: For containerization.
+4. **Kubernetes**: Enabled via Docker Desktop.
+5. **Skaffold**: Install from [Skaffold CLI](https://skaffold.dev/docs/install/).
+6. **Tesseract OCR**: Install from [Tesseract OCR Installation Guide](https://github.com/tesseract-ocr/tesseract).
+7. **Google Chrome**: For accessing the built-in AI prompt model. This require Build-in AI model readily available on your chrome browser, follow the [Steps] (https://docs.google.com/document/d/1VG8HIyz361zGduWgNG7R_R8Xkv0OOJ8b5C9QKeCjU0c/edit?tab=t.0) to install the model on your chrome.
+
+---
+
+## Setup Instructions
+
+Follow these steps to set up the project locally:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/image-text-ai-extraction.git
+cd image-text-ai-extraction
 ```
-
-To create a production bundle:
-
-```sh
-npx nx build client
+### 2. Install Dependencies
+Run the following command to install all required dependencies:
+```bash
+npm install
 ```
-
-To see all available targets to run for a project, run:
-
-```sh
-npx nx show project client
+### 3. Log in to Docker Hub
+To interact with Docker images and push to your repository, you need to log in to Docker Hub. Ensure you have Docker Desktop installed and logged in:
+```bash
+docker login
 ```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/react:app demo
+### 4. Add a Custom Host (exai.dev)
+Add the custom host exai.dev to your computer's host file to resolve internal services:
+- **On Linux/macOS:**
+    - Open /etc/hosts in a text editor and add:
+    ```bash
+    127.0.0.1 exai.dev
+    ```
+- **On Windows:**
+    - Open C:\Windows\System32\drivers\etc\hosts and add:
+    ```bash
+    127.0.0.1 exai.dev
+    ```
+### 5. Set Up Ingress-NGINX Controller
+Set up the Ingress-NGINX controller to deploy initial infrastructure:
+Run the following command to apply the NGINX ingress controller configuration:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0-beta.0/deploy/static/provider/cloud/deploy.yaml
 ```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/react:lib mylib
+### 6. Build the Project
+Run the following command to build all the applications within the Nx monorepo:
+```bash
+nx run-many --target=build --all
 ```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+### 7. Run the Development Environment with Skaffold
+Start the local development environment using Skaffold:
+```bash
+skaffold dev
 ```
+This will start the local Kubernetes cluster with the necessary configurations and deploy the applications for continuous development.
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+### How It Works
+1. **Tesseract OCR**: Used to extract text from scanned images.
+2. **Chrome-Built-in-AI Prompt Model**: Google Chrome's AI model processes the extracted text to generate prompts for data extraction.
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### LICENCE
+This project is licensed under the MIT License
