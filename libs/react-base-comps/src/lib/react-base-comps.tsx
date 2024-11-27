@@ -82,7 +82,7 @@ export const TextInput = forwardRef<TextInputHandle, TextInputProps>(({ placehol
     },
     resetValue: () => {
       if (inputRef.current) {
-        inputRef.current.value = '';
+        setInputValue('');
       }
     }
   }));

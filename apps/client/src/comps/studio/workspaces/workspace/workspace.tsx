@@ -9,6 +9,7 @@ import ProjectBar from "../../../navigation/project-bar";
 import { entitiesEndPoint, ocrEndPoint, workspaceEndPoint } from "@chrome-buildin-ai-naseem/endpoints";
 import { IEntities, IWorkspace } from "@chrome-buildin-ai-naseem/interfaces";
 import { getResponseFromPromptApi } from "@chrome-buildin-ai-naseem/chrome-buildin-ai-api";
+import LoadingBarComponent from "../../../loading-bar/loading-bar";
 
 
 interface IWorkspacesResponse extends IWorkspace {
@@ -26,6 +27,7 @@ export default function Workspace() {
     const [entities, setEntities] = useState<IEntitiesResponse[]>([]);
     const [currentWorkspace, setCurrentWorkspace] = useState<IWorkspacesResponse>();
     const [extractedData, setExtractedData] = useState<any>({});
+    const [fileSelected, setFileSelected] = useState(false);
 
     //get detail of selected workspace from mongodb
     useEffect(() => {
@@ -42,11 +44,12 @@ export default function Workspace() {
             }
         }
         fetchData();
-    }, [workspaceId]);    
+    }, [workspaceId]);
 
     async function handleOnFileSelect(file: File | null) {
         // setSelectedFile(file);
-        if (file !==null) {
+        if (file !== null) {
+            setFileSelected(true);
             const formData = new FormData();
             formData.append('image', file);
             try {
@@ -54,12 +57,15 @@ export default function Workspace() {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
                 if (entities.length > 0) {
-                    getResponseFromPromptApi(`Extract ${entities.map(entity => entity.entityName).join(', ')} from this text in json format, ${response.data.extractedText}, only extract the data which is asked`)
+                    getResponseFromPromptApi(`Extract ${entities.map(entity => entity.entityName).join(', ')} from this text in key:value form, ${response.data.extractedText}`)
                         .then((promptResponse) => {
                             console.log(promptResponse);
-                            const jsonString = promptResponse.replace(/^```json|```$/g, '').trim();
-                            console.log(JSON.parse(jsonString));
-                            setExtractedData(JSON.parse(jsonString));
+                            // const jsonString = promptResponse.replace(/^```json|```$/g, '').trim();
+                            // console.log(JSON.parse(jsonString));
+                            // setExtractedData(JSON.parse(jsonString));
+                            console.log(promptResponse)
+                            setExtractedData(promptResponse)
+
                         })
                         .catch((error) => {
                             console.log("Error: ", error);
@@ -73,6 +79,10 @@ export default function Workspace() {
             }
             setPreviewUrl(URL.createObjectURL(file));
         }
+        else {
+            setFileSelected(false);
+            setPreviewUrl(null);
+        }
     }
 
     async function handleAddNewEntity() {
@@ -80,14 +90,15 @@ export default function Workspace() {
             const value = newEntityInputRef.current.getValue();
             await axios.post<IEntitiesResponse, AxiosResponse<IEntitiesResponse>, IEntities>(entitiesEndPoint, { entityName: value, workspaceId: workspaceId ?? '' })
                 .then((response) => {
-                    setEntities(prevVal => [response.data, ...prevVal]);
                     newEntityInputRef.current?.resetValue();
+                    setEntities(prevVal => [response.data, ...prevVal]);
                 })
                 .catch((error) => {
                     console.log(error);
                 })
         }
     }
+
 
     return <>
         <TopHeader />
@@ -100,18 +111,28 @@ export default function Workspace() {
             </div>
             <div className={styles.rightpane}>
                 <div className={styles.new_entity}>
-                    <TextInput ref={newEntityInputRef} placeholder="Add a new entity" initValue=""/>
+                    <TextInput ref={newEntityInputRef} placeholder="Add a new entity" initValue="" />
                     <Button title="Add" type="btn_small_highlighted" onClick={handleAddNewEntity} />
                 </div>
                 <hr />
                 <h5>Entities</h5>
                 <div className={styles.entities}>
-                    {entities.map((entity) => {
-                        return (<div key={entity._id}>
-                            <h6>{entity.entityName}</h6>
-                            <TextArea initValue={extractedData[entity.entityName]===null ? "Not specified in supplied document":extractedData[entity.entityName]===undefined ? "":JSON.stringify(extractedData[entity.entityName])} />
-                        </div>);
-                    })}
+                    {Object.keys(extractedData).length === 0 && fileSelected===true ? <>
+                        <LoadingBarComponent show />
+                        {entities.map((entity) => {
+                            return (<div key={entity._id}>
+                                <h6>{entity.entityName}</h6>
+                                <TextArea initValue={extractedData[entity.entityName] === null ? "Not specified in supplied document" : extractedData[entity.entityName] === undefined ? "" : extractedData[entity.entityName]} />
+                            </div>);
+                        })}
+                    </> :
+                        entities.map((entity) => {
+                            return (<div key={entity._id}>
+                                <h6>{entity.entityName}</h6>
+                                <TextArea initValue={extractedData[entity.entityName] === null ? "Not specified in supplied document" : extractedData[entity.entityName] === undefined ? "" : extractedData[entity.entityName]} />
+                            </div>);
+                        })}
+
                 </div>
             </div>
         </div>

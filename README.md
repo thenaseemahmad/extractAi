@@ -34,8 +34,8 @@ Follow these steps to set up the project locally:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/image-text-ai-extraction.git
-cd image-text-ai-extraction
+git clone https://github.com/thenaseemahmad/extractAi.git
+cd extractAi
 ```
 ### 2. Install Dependencies
 Run the following command to install all required dependencies:
