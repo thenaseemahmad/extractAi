@@ -40,7 +40,7 @@ const serviceName = 'WORKSPACE SERVICE'
 async function start(){
 
   //make connection with mongodb here test
-  await mongoose.connect(`${mongodbEndPoint}/workspaces`)
+  await mongoose.connect(`${mongodbEndPoint}/workspaces?directConnection=true`)
     .then(() => {
       console.log(`${serviceName} Connected to MONGODB successfully`)
     })

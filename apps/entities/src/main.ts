@@ -33,7 +33,7 @@ app.use(errorHandler);
 const serviceName = 'ENTITIES SERVICE';
 async function start() {
 
-  await mongoose.connect(`${mongodbEndPoint}/entities`)
+  await mongoose.connect(`${mongodbEndPoint}/entities?directConnection=true`)
     .then(()=>{
       console.log(`${serviceName} Connected to MONGODB successfully`)
     })

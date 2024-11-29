@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './FileUpload.module.css';
 
 interface FileUploadProps {
@@ -7,14 +7,15 @@ interface FileUploadProps {
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
       onFileSelect(file);
+      setSelectedFile(file);      
     }
   };
 
@@ -32,14 +33,17 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect}) => {
     setIsDragging(false);
     const file = event.dataTransfer.files[0];
     if (file) {
-      setSelectedFile(file);
       onFileSelect(file);
+      setSelectedFile(file);      
     }
   };
 
   function clearFile() {
-    setSelectedFile(null);
     onFileSelect(null)
+    setSelectedFile(null);
+    if(fileInputRef.current){
+      fileInputRef.current.value='';
+    }    
   };
 
   return (
@@ -54,6 +58,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect}) => {
         onChange={handleFileChange}
         accept="image/*"
         className={styles.file_input}
+        ref={fileInputRef}
       />
       <p>{selectedFile ? 'Change file' : 'Drag & drop or click to upload'}</p>
       {selectedFile ? (

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import TopHeader from "../../../navigation/TopHeader";
 import styles from "./workspace.module.css";
-import FileUpload from "../../../file-upload/FileUpload";
+import FileUpload from '../../../file-upload/FileUpload';
 import { Button, TextInput, TextInputHandle, ImageRender, TextArea } from "@chrome-buildin-ai-naseem/react-base-comps";
 import { useEffect, useRef, useState } from "react";
 import axios, { Axios, AxiosResponse } from "axios";
@@ -10,6 +10,7 @@ import { entitiesEndPoint, ocrEndPoint, workspaceEndPoint } from "@chrome-buildi
 import { IEntities, IWorkspace } from "@chrome-buildin-ai-naseem/interfaces";
 import { getResponseFromPromptApi } from "@chrome-buildin-ai-naseem/chrome-buildin-ai-api";
 import LoadingBarComponent from "../../../loading-bar/loading-bar";
+import ErrorPopMessage from "../../../message-pop-up/Error-pop-message";
 
 
 interface IWorkspacesResponse extends IWorkspace {
@@ -28,6 +29,7 @@ export default function Workspace() {
     const [currentWorkspace, setCurrentWorkspace] = useState<IWorkspacesResponse>();
     const [extractedData, setExtractedData] = useState<any>({});
     const [fileSelected, setFileSelected] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     //get detail of selected workspace from mongodb
     useEffect(() => {
@@ -50,6 +52,7 @@ export default function Workspace() {
         // setSelectedFile(file);
         if (file !== null) {
             setFileSelected(true);
+            setExtractedData({});
             const formData = new FormData();
             formData.append('image', file);
             try {
@@ -57,18 +60,15 @@ export default function Workspace() {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
                 if (entities.length > 0) {
-                    getResponseFromPromptApi(`Extract ${entities.map(entity => entity.entityName).join(', ')} from this text in key:value form, ${response.data.extractedText}`)
+                    getResponseFromPromptApi(`Extract ${entities.map(entity => entity.entityName).join(', ')} from this text in key:value format, ${response.data.extractedText}, Stick to the asked keys only`)
                         .then((promptResponse) => {
                             console.log(promptResponse);
-                            // const jsonString = promptResponse.replace(/^```json|```$/g, '').trim();
-                            // console.log(JSON.parse(jsonString));
-                            // setExtractedData(JSON.parse(jsonString));
-                            console.log(promptResponse)
                             setExtractedData(promptResponse)
 
                         })
                         .catch((error) => {
                             console.log("Error: ", error);
+                            setError(error)
                         });
                 } else {
                     console.log("No entity supplied")
@@ -81,6 +81,7 @@ export default function Workspace() {
         }
         else {
             setFileSelected(false);
+            setExtractedData({});
             setPreviewUrl(null);
         }
     }
@@ -136,5 +137,6 @@ export default function Workspace() {
                 </div>
             </div>
         </div>
+        {error && <ErrorPopMessage message={error} duration={3000} onClose={()=> setError(null)}/>}
     </>
 }

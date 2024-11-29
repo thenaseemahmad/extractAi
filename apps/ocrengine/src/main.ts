@@ -39,10 +39,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-app.get('/', (req, res) => {
-  res.send({ message: 'Hello API from tesseract engine' });
-});
-
 app.post('/upload', upload.single('image'),async(req,res)=>{
   if(!req.file){
     return res.status(400).json({message:'No file uploaded'});

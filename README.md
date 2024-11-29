@@ -1,6 +1,7 @@
-# ExtractionAi (Data Extraction from Images using Chrome-build-in AI)
+# extractAi (Data Extraction from Images using Chrome-build-in genAi and Tesseract OCR)
+![Apps process flow](/assets/process-flow.png)
 
-This project extracts data from scanned images using **Tesseract OCR** for text recognition and processes the extracted data using **Chrome's Built-in AI Prompt Generation Model**. Designed with a modern, scalable architecture, the project is ideal for automating workflows involving image-based data.
+This Web application extracts data from scanned images using **Tesseract OCR** for text recognition and processes the extracted data using **Chrome's Built-in AI Prompt Generation Model**. Designed with a modern, scalable architecture, the project is ideal for automating workflows involving image-based data.
 
 ---
 
@@ -20,15 +21,16 @@ Ensure the following are installed on your system before starting:
 
 1. **Node.js** (v16 or later)
 2. **Nx CLI**: Install with `npm install -g nx`
-3. **Docker Desktop**: For containerization.
+3. **Docker Desktop along with Kubernetes enabled**: For containerization.
 4. **Kubernetes**: Enabled via Docker Desktop.
 5. **Skaffold**: Install from [Skaffold CLI](https://skaffold.dev/docs/install/).
-6. **Tesseract OCR**: Install from [Tesseract OCR Installation Guide](https://github.com/tesseract-ocr/tesseract).
-7. **Google Chrome**: For accessing the built-in AI prompt model. This require Build-in AI model readily available on your chrome browser, follow the [Steps] (https://docs.google.com/document/d/1VG8HIyz361zGduWgNG7R_R8Xkv0OOJ8b5C9QKeCjU0c/edit?tab=t.0) to install the model on your chrome.
+6. **Google Chrome**: For accessing the built-in AI prompt model. This require Build-in AI model readily available on your chrome browser, follow the [Steps](https://docs.google.com/document/d/1VG8HIyz361zGduWgNG7R_R8Xkv0OOJ8b5C9QKeCjU0c/edit?tab=t.0) to install the model on your chrome.
 
 ---
 
 ## Setup Instructions
+
+![kubernetes infra](/assets/Infrastructure.png)
 
 Follow these steps to set up the project locally:
 
@@ -40,13 +42,11 @@ cd extractAi
 ### 2. Install Dependencies
 Run the following command to install all required dependencies:
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
-### 3. Log in to Docker Hub
-To interact with Docker images and push to your repository, you need to log in to Docker Hub. Ensure you have Docker Desktop installed and logged in:
-```bash
-docker login
-```
+### 3. Start Docker desktop along with build in kubernetes cluster
+To spin the services as Kubernetes pods in local Kubernetes setup. If you dont have it already install, then [install](https://docs.docker.com/desktop/) for your system (Windows, Mac, or Linux)
+
 ### 4. Add a Custom Host (exai.dev)
 Add the custom host exai.dev to your computer's host file to resolve internal services:
 - **On Linux/macOS:**
@@ -76,10 +76,10 @@ Start the local development environment using Skaffold:
 skaffold dev
 ```
 This will start the local Kubernetes cluster with the necessary configurations and deploy the applications for continuous development.
-
+---
 ### How It Works
 1. **Tesseract OCR**: Used to extract text from scanned images.
 2. **Chrome-Built-in-AI Prompt Model**: Google Chrome's AI model processes the extracted text to generate prompts for data extraction.
-
+---
 ### LICENCE
 This project is licensed under the MIT License

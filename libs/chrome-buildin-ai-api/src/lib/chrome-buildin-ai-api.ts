@@ -1,4 +1,4 @@
-import { IResponse, parseApiResponseToJSON, parseToJsonViaRegex } from "./markdown-response-parser";
+import { IResponse, parseToJsonViaRegex } from "./markdown-response-parser";
 
 declare const window: any;
 export function getResponseFromPromptApi(prompt: string): Promise<IResponse> {
