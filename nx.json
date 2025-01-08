@@ -67,7 +67,11 @@
           "configName": "tsconfig.lib.json"
         }
       },
-      "exclude": ["libs/chrome-build-in-api/*", "libs/chrome-buildin-ai-api/*"]
+      "exclude": [
+        "libs/chrome-build-in-api/*",
+        "libs/chrome-buildin-ai-api/*",
+        "libs/google-gemini-engine/*"
+      ]
     }
   ],
   "targetDefaults": {

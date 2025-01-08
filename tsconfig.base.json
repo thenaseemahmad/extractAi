@@ -20,6 +20,9 @@
       ],
       "@chrome-buildin-ai-naseem/endpoints": ["libs/endpoints/src/index.ts"],
       "@chrome-buildin-ai-naseem/errors": ["libs/errors/src/index.ts"],
+      "@chrome-buildin-ai-naseem/google-gemini-engine": [
+        "libs/google-gemini-engine/src/index.ts"
+      ],
       "@chrome-buildin-ai-naseem/interfaces": ["libs/interfaces/src/index.ts"],
       "@chrome-buildin-ai-naseem/middlewares": [
         "libs/middlewares/src/index.ts"
