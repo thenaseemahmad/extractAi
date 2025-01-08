@@ -9,6 +9,7 @@ import ProjectBar from "../../../navigation/project-bar";
 import { entitiesEndPoint, ocrEndPoint, workspaceEndPoint } from "@chrome-buildin-ai-naseem/endpoints";
 import { IEntities, IWorkspace } from "@chrome-buildin-ai-naseem/interfaces";
 import { getResponseFromPromptApi } from "@chrome-buildin-ai-naseem/chrome-buildin-ai-api";
+import {getResponseFromGoogleGeminiEngine} from "@chrome-buildin-ai-naseem/google-gemini-engine";
 import LoadingBarComponent from "../../../loading-bar/loading-bar";
 import ErrorPopMessage from "../../../message-pop-up/Error-pop-message";
 
@@ -60,7 +61,7 @@ export default function Workspace() {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
                 if (entities.length > 0) {
-                    getResponseFromPromptApi(`Extract ${entities.map(entity => entity.entityName).join(', ')} from this text in key:value format, ${response.data.extractedText}, Stick to the asked keys only`)
+                    getResponseFromGoogleGeminiEngine(`Extract ${entities.map(entity => entity.entityName).join(', ')} from this text in key:value format, ${response.data.extractedText}, Stick to the asked keys only`)
                         .then((promptResponse) => {
                             console.log(promptResponse);
                             setExtractedData(promptResponse)
